@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja>
+<head>
+    <meta charset=" UTF-8">
+<!-- <meta content="text/html; charset=shift_jis" http-equiv="Content-Type" /> -->
+<meta http-equiv="content-type" charset="utf-8">
+<link type="text/css" rel="stylesheet" href="css/desty.css">
+<link type="text/css" rel="stylesheet" href="css/common.css">
+<link type="text/css" rel="stylesheet" href="css/test.css">
+<link type="text/css" rel="stylesheet" href="css/setting.css">
+<title>Degree Harmonizer</title>
+</head>
+
+<body>
+    <div class="main">
+        <div id="system">
+            <div class="tab-list">
+                <div class="tab-menu" onclick="selectTab(this)"><span>Test</span></div>
+                <div class="tab-menu disable" onclick="selectTab(this)"><span>List</span></div>
+                <div class="tab-menu disable" onclick="selectTab(this)"><span>Note</span></div>
+                <div class="tab-menu disable" onclick="selectTab(this)"><span>Backing</span></div>
+                <div class="tab-menu disable" onclick="selectTab(this)"><span>Preview</span></div>
+                <div class="tab-menu" onclick="selectTab(this)"><span>Setting</span></div>
+            </div>
+            <div class="cont-list">
+                <div class="contents" id="system_cont-test" tabindex="999">
+                    <div id="chord-box">
+                        <table>
+                            <tr></tr>
+                            <tr></tr>
+                            <tr></tr>
+                            <tr></tr>
+                            <tr></tr>
+                            <tr></tr>
+                            <tr></tr>
+                            <tr></tr>
+                        </table>
+                    </div>
+                    <div id="tuning">
+                    </div>
+                    <div id="backing-plate"></div>
+                    <div id="keyboad">
+                        <canvas id="can"></canvas>
+                    </div>
+                </div>
+                <div class="contents" id="system_cont-list">
+                </div>
+                <div class="contents" id="system_cont-note">
+                </div>
+                <div class="contents" id="system_cont-backing">
+                </div>
+                <div class="contents" id="system_cont-preview">
+                </div>
+                <div class="contents" id="system_cont-setting">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <script src="http://chamu.org/tonejs/Tone.min.js"></script> -->
+    <script type="text/javascript" src="js/Tone.min.js"></script>
+    <script type="text/javascript" src="js/system.js"></script>
+    <script type="text/javascript" src="js/test.js"></script>
+    <script type="text/javascript" src="js/keyboad.js"></script>
+    <script type="text/javascript" src="js/setting.js"></script>
+</body>
+
+</html>

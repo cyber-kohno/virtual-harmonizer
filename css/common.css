@@ -1,0 +1,115 @@
+@charset "utf-8";
+
+html, body {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+body {
+    display: block;
+    min-width: 800px;
+    min-height: 600px;
+    font-size: 0;
+    background: #444444;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+/* スクロールの背景の設定 */
+
+::-webkit-scrollbar-track {
+    border-radius: 5px;
+    box-shadow: 0 0 4px #aaa inset;
+}
+
+/* スクロールのつまみ部分の設定 */
+
+::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background: #1959A8;
+}
+
+.disable {
+    opacity: 0.3 !important;
+    pointer-events: none !important;
+    -webkit-user-select: none !important;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.param {
+    display: none !important;
+}
+
+.main {
+    display: inline-block;
+    height: calc(100%);
+    width: 100%;
+    bottom: 0;
+    background-color: #403864;
+    overflow: auto;
+}
+
+.tab-list {
+    display: inline-block;
+    height: 30px;
+    font-size: 0;
+}
+
+.tab-menu {
+    display: inline-block;
+    height: 100%;
+    background-color: #99a;
+    opacity: 0.5;
+    border-radius: 5px 5px 0 0;
+    user-select: none;
+    margin-right: 5px;
+}
+
+.tab-menu>span {
+    display: inline-block;
+    margin-top: 4px;
+    padding: 0 5px;
+    font-size: 15px;
+}
+
+.tab-active {
+    opacity: 1;
+    color: #fff;
+    padding: 0 20px;
+    transition: padding 100ms;
+}
+
+.cont-list {
+    display: block;
+    background-color: #99a;
+    height: calc(100% - 30px);
+    border-radius: 0 6px 6px 6px;
+}
+
+.cont-active {
+    display: inline-block !important;
+}
+
+#system {
+    display: block;
+    margin: 10px;
+    height: calc(100% - 20px);
+    width: calc(100% - 20px);
+}
+
+.contents {
+    display: none;
+    background-color: rgba(0, 0, 0, 0.1);
+    height: calc(100% - 10px);
+    width: calc(100% - 10px);
+    margin: 5px;
+    text-align: center;
+    vertical-align: top;
+}

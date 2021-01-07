@@ -1,0 +1,14 @@
+#system_cont-setting {
+    width: 500px;
+    height: 200px;
+}
+
+input {
+    margin: 10px auto;
+    width: 200px;
+    height: 60px;
+    font-size: 40px;
+    background-color: #eee;
+    border-radius: 5px;
+    border: solid 1px #777;
+}
