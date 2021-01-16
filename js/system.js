@@ -17,10 +17,17 @@ window.onload = function () {
 
 function initSynth() {
     synth = new Tone.Sampler({
-        "E2": "https://dl.dropbox.com/s/xoyrmfpifgzz8qs/e2.mp3?dl=0",
-        "E3": "https://dl.dropbox.com/s/ypo7x2erg932u5c/e3.mp3?dl=0",
-        "E4": "https://dl.dropbox.com/s/i6pyt1q1x380hk5/e4.mp3?dl=0",
-        "E5": "https://dl.dropbox.com/s/y5iix9qabxxr3it/e5.mp3?dl=0",
+        // "E2": "https://dl.dropbox.com/s/xoyrmfpifgzz8qs/e2.mp3?dl=0",
+        // "E3": "https://dl.dropbox.com/s/ypo7x2erg932u5c/e3.mp3?dl=0",
+        // "E4": "https://dl.dropbox.com/s/i6pyt1q1x380hk5/e4.mp3?dl=0",
+        // "E5": "https://dl.dropbox.com/s/y5iix9qabxxr3it/e5.mp3?dl=0",
+        // "E1": "https://dl.dropbox.com/s/ysx8eamwfa1ueko/KEPSREC028.mp3?dl=0",
+        "E2": "https://dl.dropbox.com/s/0aghs80w9aggubw/KEPSREC040.mp3?dl=0",
+        "E3": "https://dl.dropbox.com/s/wxtf0u0ly03hu44/KEPSREC052.mp3?dl=0",
+        "A#3": "https://dl.dropbox.com/s/hbm9d1vo5tlxymk/KEPSREC058.mp3?dl=0",
+        "E4": "https://dl.dropbox.com/s/3qy88udfkzmzr13/KEPSREC064.mp3?dl=0",
+        "E5": "https://dl.dropbox.com/s/tdjp24r9pfoi2ff/KEPSREC076.mp3?dl=0",
+        "E6": "https://dl.dropbox.com/s/onp7h2vn2d6nhs7/KEPSREC088.mp3?dl=0",
     }).toMaster();
     // シンセサイザーを生成
     // synth = new Tone.PolySynth({

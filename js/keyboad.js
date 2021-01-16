@@ -1,5 +1,5 @@
 const SCREEN_WIDTH = 1800;
-const SCREEN_HEIGHT = 170;
+const SCREEN_HEIGHT = 150;
 const MARGIN_SIDE = 10;
 const MARGIN_LENGTH = 5;
 const KEY_NUM = 52;
@@ -32,7 +32,11 @@ function drawKey(ctx, orgs) {
     for (let i = 0; i < KEY_NUM; i++) {
         const X = MARGIN_SIDE + KEY_INTERVAL * i;
 
-        setColor(ctx, '#fff');
+        let whiteKeyColor = '#fff';
+        const index = comvertWIndex(i);
+        if (orgs.includes(index)) whiteKeyColor = '#f80';
+
+        setColor(ctx, whiteKeyColor);
         drawsq(ctx, X, MARGIN_LENGTH, KEY_WIDTH, KEY_HEIGHT, 0, 3);
 
         const SHADE_HEIGHT = 15;
@@ -44,7 +48,7 @@ function drawKey(ctx, orgs) {
             setColor(ctx, gradColor);
             drawsq(ctx, X, SHADE_Y, KEY_WIDTH, SHADE_HEIGHT + 10, 0, 3);
         }
-        setColor(ctx, '#fff');
+        setColor(ctx, whiteKeyColor);
         drawsq(ctx, X, MARGIN_LENGTH, KEY_WIDTH, KEY_HEIGHT - SHADE_HEIGHT, 0, 5);
 
         {
@@ -56,19 +60,19 @@ function drawKey(ctx, orgs) {
         }
 
         // 印
-        {
-            const SZ = 20;
-            const index = comvertWIndex(i);
-            if (orgs.includes(index)) {
-                console.log(i + '---' + index);
-                setColor(ctx, '#00a');
-                drawsq(ctx,
-                    X + KEY_WIDTH / 2 - SZ / 2,
-                    MARGIN_LENGTH + KEY_HEIGHT - KEY_WIDTH / 2 - SZ / 2 - SHADE_HEIGHT,
-                    SZ, SZ, SZ / 2, SZ / 2
-                );
-            }
-        }
+        // {
+        //     const SZ = 20;
+        //     const index = comvertWIndex(i);
+        //     if (orgs.includes(index)) {
+        //         console.log(i + '---' + index);
+        //         setColor(ctx, '#00a');
+        //         drawsq(ctx,
+        //             X + KEY_WIDTH / 2 - SZ / 2,
+        //             MARGIN_LENGTH + KEY_HEIGHT - KEY_WIDTH / 2 - SZ / 2 - SHADE_HEIGHT,
+        //             SZ, SZ, SZ / 2, SZ / 2
+        //         );
+        //     }
+        // }
     }
 
     // 赤線
@@ -87,6 +91,11 @@ function drawKey(ctx, orgs) {
         const X = MARGIN_SIDE + KEY_INTERVAL * i;
 
         if (i == KEY_NUM - 1) break;
+
+        let blackKeyColor = '#222';
+        const index = comvertBIndex(i);
+        if (orgs.includes(index)) blackKeyColor = '#f80';
+
         switch (i % 7) {
             case 0:
             case 2:
@@ -96,7 +105,7 @@ function drawKey(ctx, orgs) {
                 const BT = MARGIN_LENGTH + 7;
                 const BX = X + KEY_WIDTH + MARGIN_KEY / 2 - BLACK_WIDTH / 2;
 
-                setColor(ctx, '#222222');
+                setColor(ctx, blackKeyColor);
                 drawsq(ctx, BX, BT, BLACK_WIDTH, BLACK_HEIGHT, 0, 0);
 
                 const BLACK_BOTTOM = BT + BLACK_HEIGHT;
@@ -106,7 +115,7 @@ function drawKey(ctx, orgs) {
 
                 // 黒鍵の陰（上）
                 {
-                    setColor(ctx, 'rgba(44,44,44,1)');
+                    setColor(ctx, blackKeyColor);
                     drawsq(ctx, BX2, MARGIN_LENGTH + 2, W2, BLACK_HEIGHT - 16, 8, 8);
 
                     const gradColor = ctx.createLinearGradient(BX2, MARGIN_LENGTH + 2, BX2, BLACK_BOTTOM - 16);
@@ -135,19 +144,19 @@ function drawKey(ctx, orgs) {
                 }
 
                 // 印
-                {
-                    const SZ = 12;
-                    const index = comvertBIndex(i);
-                    if (orgs.includes(index)) {
-                        console.log(i + '---' + index);
-                        setColor(ctx, '#00a');
-                        drawsq(ctx,
-                            BX2 + W2 / 2 - SZ / 2,
-                            MARGIN_LENGTH + 2 + BLACK_HEIGHT - 16 - W2,
-                            SZ, SZ, 7, 7
-                        );
-                    }
-                }
+                // {
+                //     const SZ = 12;
+                //     const index = comvertBIndex(i);
+                //     if (orgs.includes(index)) {
+                //         console.log(i + '---' + index);
+                //         setColor(ctx, '#00a');
+                //         drawsq(ctx,
+                //             BX2 + W2 / 2 - SZ / 2,
+                //             MARGIN_LENGTH + 2 + BLACK_HEIGHT - 16 - W2,
+                //             SZ, SZ, 7, 7
+                //         );
+                //     }
+                // }
                 break;
         }
     }

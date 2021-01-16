@@ -66,6 +66,7 @@ body {
     display: inline-block;
     height: 100%;
     background-color: #99a;
+    color: #555;
     opacity: 0.5;
     border-radius: 5px 5px 0 0;
     user-select: none;
@@ -74,9 +75,10 @@ body {
 
 .tab-menu>span {
     display: inline-block;
-    margin-top: 4px;
+    margin-top: 7px;
     padding: 0 5px;
-    font-size: 15px;
+    font-size: 16px;
+    font-weight: 600;
 }
 
 .tab-active {
@@ -112,4 +114,23 @@ body {
     margin: 5px;
     text-align: center;
     vertical-align: top;
+}
+
+.line {
+    display: block;
+    margin-bottom: 5px;
+    /* background-color: #eeeeee; */
+}
+
+button {
+    font-size: 25px;
+    margin: 0 5px;
+    background-color: #ee8;
+    padding: 5px 10px;
+    border-radius: 4px;
+    border: solid 1px #000;
+}
+
+button:hover {
+    background-color: #ffa;
 }

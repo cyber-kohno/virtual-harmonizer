@@ -2,6 +2,10 @@
 var timerIdList = new Array();
 var nextBacking = null;
 var isPlay = false;
+var sustain = false;
+var autoSustain = false;
+
+var keyPressList = {};
 
 const ALPHABETS = Array.apply(null, new Array(26)).map((v, i) => {
     return String.fromCharCode('a'.charCodeAt(0) + i);
@@ -40,7 +44,6 @@ const SYMBOL = {
 }
 
 function buildChordBox() {
-
     buildDiatonicChordItem();
     build7ThChordItem();
     buildSus4ChordItem();
@@ -56,9 +59,6 @@ function buildChordBox() {
     const list = [];
     drawKeyboad(list);
 
-    const pianoEl = document.getElementById('keyboad')
-    pianoEl.scrollLeft = 600;
-
     buildBackingPlate();
 
     const rootEl = document.getElementById('system_cont-test');
@@ -72,21 +72,52 @@ function buildChordBox() {
             }
         }
         if (e.key === ' ') {
-            synthReleaseAll();
+            sustainOn();
+            // audioElm.play();
+        }
+
+
+        if (e.key === 'ArrowLeft') {
+            setSelectTab('test-footer', 0);
+        }
+        if (e.key === 'ArrowUp') {
+            setSelectTab('test-footer', 1);
+        }
+        if (e.key === 'ArrowRight') {
+            setSelectTab('test-footer', 2);
+        }
+        if (e.key === 'ArrowDown') {
+            if(!autoSustain) {
+                autoSustain = true;
+                sustainOn();
+            } else {
+                autoSustain = false;
+                sustainOff();
+            }
+        }
+    });
+    rootEl.addEventListener('keyup', function (e) {
+        if (e.key === ' ') {
+            sustainOff()
         }
     });
 
-    const initialPatternKeyEl = document.getElementById('pattern_key_a');
-    initialPatternKeyEl.classList.add('active');
+    buildSessionTab();
+
+    selectPatternKey('a');
 }
 
-function selectPatternKey(key) {
-    for (let i = 0; i < ALPHABETS.length; i++) {
-        const value = ALPHABETS[i];
-        const keyEl = document.getElementById(`pattern_key_${value}`);
-        if (value === key) keyEl.classList.add('active');
-        else keyEl.classList.remove('active');
-    }
+function sustainOn() {
+    this.sustain = true;
+    const sustainEl = document.getElementById('sustain');
+    sustainEl.classList.add('active');
+}
+
+function sustainOff() {
+    this.sustain = false;
+    updateRelease();
+    const sustainEl = document.getElementById('sustain');
+    sustainEl.classList.remove('active');
 }
 
 function buildDiatonicChordItem() {
@@ -135,7 +166,8 @@ function buildParallelChordItem() {
 
     const list = new Array();
     list.push(getDataCode(0, 0, SYMBOL.MINOR));
-    list.push(null);
+    // list.push(null);
+    list.push(getDataCode(0, 1, SYMBOL.MAJOR));
     list.push(getDataCode(2, 2, SYMBOL.MAJOR));
     list.push(getDataCode(0, 3, SYMBOL.MINOR));
     list.push(getDataCode(0, 4, SYMBOL.MINOR));
@@ -240,15 +272,14 @@ function playSynth(obj, str) {
     const params = backingScript[0];
     const scores = backingScript[1];
     const bpm = getBPM();
-    const backingLenght = params[1];
     const divid = scores.length;
+    const backingLenght = 1000 / Number(params[0]) * divid;
     // alert('notes: ' + notes);
     // alert('bpm: ' + bpm);
 
     const values = str.split(',');
     const root = getSelectedKeyIndex();
     const list = [];
-    synthReleaseAll();
     for (let i = 0; i < values.length; i++) {
         const sub = root + Number(values[i]);
         const octave = 3 + Math.floor(sub / 12);
@@ -256,19 +287,8 @@ function playSynth(obj, str) {
     }
 
     const sectionTime = backingLenght * 60 / bpm * 4;
+    const interval = sectionTime / divid;
 
-    for (let i = 0; i < divid; i++) {
-        const id = setTimeout(() => {
-            const notes = scores[i];
-            for (let j = 0; j < notes.length; j++) {
-                const noteIndex = notes[j][0];
-                if (noteIndex > list.length - 1) continue;
-                const adjust = notes[j][1] * 12;
-                attackSynth(list[noteIndex] + adjust);
-            }
-        }, i * sectionTime / divid);
-        timerIdList.push(id);
-    }
     // 演奏終了時
     setTimeout(() => {
         isPlay = false;
@@ -276,9 +296,49 @@ function playSynth(obj, str) {
             nextBacking();
             nextBacking = null;
         }
+        runBacking(-1);
     }, sectionTime);
 
-    drawKeyboad(list);
+    // synthReleaseAll();
+    for (let i = 0; i < divid; i++) {
+        const id = setTimeout(() => {
+            runBacking(i);
+            const notes = scores[i];
+            for (let j = 0; j < notes.length; j++) {
+                const noteIndex = notes[j][0];
+                if (noteIndex > list.length - 1) continue;
+                const adjust = notes[j][1] * 12;
+                attackSynth(list[noteIndex] + adjust, interval);
+            }
+            if (autoSustain && i == 0) {
+                setTimeout(() => {
+                    sustainOff();
+                }, 50);
+                setTimeout(() => {
+                    sustainOn();
+                }, interval - 50);
+            }
+        }, i * interval);
+        timerIdList.push(id);
+    }
+
+    // drawKeyboad(list);
+}
+
+function runBacking(val) {
+
+    const records = document.getElementById('backing-table').children[0].children[0].children;
+    for (let i = 0; i < records.length; i++) {
+        const cells = records[i].children;
+        for (let j = 0; j < cells.length; j++) {
+            const cell = cells[j];
+            if (val == j || val == -1) {
+                cell.classList.remove('disable');
+            } else {
+                cell.classList.add('disable');
+            }
+        }
+    }
 }
 
 function reservationSynth(obj, str) {
@@ -289,6 +349,10 @@ function reservationSynth(obj, str) {
     } else {
         playSynth(obj, str);
     }
+}
+
+function switchPedal() {
+
 }
 
 function synthReleaseAll() {
@@ -314,93 +378,68 @@ function playSynthOne(event, obj, str) {
     const values = str.split(',');
     const root = getSelectedKeyIndex();
     const list = [];
-    synthReleaseAll();
+    // synthReleaseAll();
     for (let i = 0; i < values.length; i++) {
         const sub = root + Number(values[i]);
         const octave = 3 + Math.floor(sub / 12);
         list.push(3 + (sub % 12) + octave * 12);
     }
 
-    let isOctaveDown = list[0] > 50;
+    // let isOctaveDown = list[0] > 50;
     for (let i = 0; i < list.length; i++) {
         if (soundKey != i) {
             continue;
         }
-        if (isOctaveDown) list[i] -= 12;
+        // if (isOctaveDown) list[i] -= 12;
         const value = list[i];
-        synth.triggerAttack(getSoundNameFromKeyIndex(value));
+        // synth.triggerAttack(getSoundNameFromKeyIndex(value));
+        attackSynth(value, 500);
     }
 
+}
+
+function attackSynth(noteIndex, noteTime) {
+    const soundName = getSoundNameFromKeyIndex(noteIndex);
+    // if(keyPressList[soundName] || this.sustain) {
+    //     console.log('RESET:: ' + soundName);
+    //     synth.triggerRelease(soundName);
+    // }
+    synth.triggerAttack(soundName, '+0', 0.15);
+
+    setTimeout(() => {
+        keyPressList[soundName].isPress = false;
+        updateRelease();
+        updateKeyboad();
+    }, noteTime);
+    keyPressList[soundName] = { index: noteIndex, isPress: true };
+
+    updateKeyboad();
+}
+
+function updateKeyboad() {
+    const list = new Array();
+    for (let key in keyPressList) {
+        if (keyPressList[key].isPress) list.push(keyPressList[key].index);
+    }
     drawKeyboad(list);
 }
 
-function attackSynth(index) {
-    synth.triggerAttack(getSoundNameFromKeyIndex(index));
-}
-
-function getSelectedPatternKey() {
-
-    for (let i = 0; i < ALPHABETS.length; i++) {
-        const value = ALPHABETS[i];
-        const keyEl = document.getElementById(`pattern_key_${value}`);
-        if (keyEl.classList.contains('active')) return value;
+function updateRelease() {
+    if (this.sustain) return;
+    let str = 'STOP:: '
+    for (let key in keyPressList) {
+        const isPress = keyPressList[key].isPress;
+        // synth.triggerRelease(key);
+        if (!isPress) {
+            for (let i = 0; i < 5; i++) {
+                synth.triggerRelease(key);
+            }
+            // synth.releaseAll();
+            str += key + ', ';
+        }
     }
-    return null;
-}
+    console.log(str);
 
-function getBackingScript(patternKey) {
-    switch (patternKey) {
-        case 'a': return [
-            [110, 500],
-            [
-                [[0, -1], [1, 0], [2, 0], [3, 0]]
-            ]
-        ];
-        case 's': return [
-            [110, 500],
-            [
-                [[0, -1], [1, 0], [2, 0]],
-                [],
-                [[0, 0], [1, 0], [2, 0], [3, 0]],
-                [[0, 0]],
-            ]
-        ];
-        case 'd': return [
-            [110, 500],
-            [
-                [[0, -1], [1, 0], [2, 0]],
-                [[0, 0]],
-                [[1, 0], [3, 0]],
-                [[2, 0]],
-            ]
-        ];
-        case 'f': return [
-            [110, 500],
-            [
-                [[0, -1], [1, 0], [2, 0], [3, 0]],
-                [],
-                [[1, 0]],
-                [[2, 0], [3, 0]],
-                [],
-                [[1, 0]],
-                [[2, 0], [3, 0]],
-                [[1, 0]]
-            ]
-        ];
-        case 'g': return [
-            [110, 500],
-            [
-                [[0, -1]],
-                [],
-                [[1, 0], [2, 0], [3, 0]],
-                [],
-                [[0, -1], [2, 0], [3, 0]],
-                [],
-                [[1, 0], [2, 0]],
-                [[0, 0]]
-            ]
-        ];
-    }
 }
 
 function getSoundNameFromKeyIndex(value) {
@@ -487,15 +526,3 @@ function getSelectedKeyIndex() {
     return -1;
 }
 
-
-function buildBackingPlate() {
-    const plateEl = document.getElementById('backing-plate');
-
-    let html = '';
-    for (let i = 0; i < ALPHABETS.length; i++) {
-        const value = ALPHABETS[i];
-        html += `<div class="pattern-panel" id="pattern_key_${value}"
-            onclick="selectPatternKey('${value}')">${value}</div>`;
-    }
-    plateEl.innerHTML = html;
-}

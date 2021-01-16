@@ -7,8 +7,9 @@
 <link type="text/css" rel="stylesheet" href="css/desty.css">
 <link type="text/css" rel="stylesheet" href="css/common.css">
 <link type="text/css" rel="stylesheet" href="css/test.css">
+<link type="text/css" rel="stylesheet" href="css/test_footer.css">
 <link type="text/css" rel="stylesheet" href="css/setting.css">
-<title>Degree Harmonizer</title>
+<title>Virtual Harmonizer</title>
 </head>
 
 <body>
@@ -38,9 +39,33 @@
                     </div>
                     <div id="tuning">
                     </div>
-                    <div id="backing-plate"></div>
-                    <div id="keyboad">
-                        <canvas id="can"></canvas>
+
+                    <div id="test-footer">
+                        <div class="tab-list">
+                            <div class="tab-menu" onclick="selectTab(this)"><span>Keyboad</span></div>
+                            <div class="tab-menu" onclick="selectTab(this)"><span>Backing</span></div>
+                            <div class="tab-menu" onclick="selectTab(this)"><span>Session</span></div>
+                        </div>
+                        <div class="cont-list">
+                            <div class="contents" id="test-footer_cont-keyboad">
+                                <div id="keyboad">
+                                    <canvas id="can"></canvas>
+                                    <div id="sustain"></div>
+                                </div>
+                            </div>
+                            <div class="contents" id="test-footer_cont-backing">
+                                <div id="backing-plate"></div>
+                                <div id="backing-table"></div>
+                            </div>
+                            <div class="contents" id="test-footer_cont-session">
+                                <input type="file" id="session-file">
+                                <div class="line">
+                                    <button class="disable" onclick="playSound()">play</button>
+                                    <button class="disable" onclick="stopSound()">stop</button>
+                                    <button class="disable" onclick="resetSound()">reset</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="contents" id="system_cont-list">
@@ -60,6 +85,7 @@
     <script type="text/javascript" src="js/Tone.min.js"></script>
     <script type="text/javascript" src="js/system.js"></script>
     <script type="text/javascript" src="js/test.js"></script>
+    <script type="text/javascript" src="js/test_footer.js"></script>
     <script type="text/javascript" src="js/keyboad.js"></script>
     <script type="text/javascript" src="js/setting.js"></script>
 </body>
