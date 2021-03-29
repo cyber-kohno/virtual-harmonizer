@@ -11,21 +11,6 @@ const ALPHABETS = Array.apply(null, new Array(26)).map((v, i) => {
     return String.fromCharCode('a'.charCodeAt(0) + i);
 });
 
-const SCALE_LIST = [
-    'C',
-    'C#',
-    'D',
-    'D#',
-    'E',
-    'F',
-    'F#',
-    'G',
-    'G#',
-    'A',
-    'A#',
-    'B'
-]
-
 const SCALE_TO_SUB = [0, 2, 4, 5, 7, 9, 11]
 
 const SYMBOL = {
@@ -399,7 +384,7 @@ function playSynthOne(event, obj, str) {
 }
 
 function attackSynth(noteIndex, noteTime) {
-    const soundName = getSoundNameFromKeyIndex(noteIndex);
+    const soundName = getSoundNameFromKeyIndexTest(noteIndex);
     // if(keyPressList[soundName] || this.sustain) {
     //     console.log('RESET:: ' + soundName);
     //     synth.triggerRelease(soundName);
@@ -414,6 +399,13 @@ function attackSynth(noteIndex, noteTime) {
     keyPressList[soundName] = { index: noteIndex, isPress: true };
 
     updateKeyboad();
+}
+
+function getSoundNameFromKeyIndexTest(value) {
+    value -= 3;
+    const scaleName = KEY12_MAJOR_LIST[value % 12];
+    const octave = Math.floor(value / 12);
+    return scaleName + octave;
 }
 
 function updateKeyboad() {
@@ -442,14 +434,6 @@ function updateRelease() {
 
 }
 
-function getSoundNameFromKeyIndex(value) {
-    value -= 3;
-    const scaleName = SCALE_LIST[value % 12];
-    const octave = Math.floor(value / 12);
-    // alert(scaleName + octave);
-    return scaleName + octave;
-}
-
 function setAllScaleChordName() {
 
     const tableRootEl = document.getElementById('chord-box').children[0].children[0];
@@ -467,7 +451,7 @@ function setAllScaleChordName() {
             const params = tdEl.children[2].innerHTML.split(',');
             const scaleSub = Number(params[0]);
             const symbolName = params[1];
-            const chord = SCALE_LIST[(scaleSub + selectedKeyIndex) % 12] + symbolName;
+            const chord = KEY12_SHARP_LIST[(scaleSub + selectedKeyIndex) % 12] + symbolName;
             scaleChordEl.innerHTML = chord;
             // scaleChordEl.style.color = 'rgba(255, 255, 0, 1)';
             scaleChordEl.style.opacity = '0';
@@ -483,8 +467,8 @@ function buildTuningBox() {
 
     const tuningEl = document.getElementById('tuning');
 
-    for (let i = 0; i < SCALE_LIST.length; i++) {
-        const name = SCALE_LIST[i];
+    for (let i = 0; i < KEY12_SHARP_LIST.length; i++) {
+        const name = KEY12_SHARP_LIST[i];
         tuningEl.insertAdjacentHTML('beforeend', `
             <div class="key-item" onclick="selectKey(this)">
                 <span>${name} major</span>

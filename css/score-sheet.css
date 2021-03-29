@@ -1,0 +1,27 @@
+#scoretab_cont-sheet {
+    background-color: rgb(250, 248, 236);
+
+}
+
+#sheet-music-view {
+    display: inline-block;
+    width: calc(100% - 10px);
+    height: calc(100% - 10px - 30px);
+    /* width: 100%;
+    height: 500px; */
+    /* background-color: rgb(255, 255, 255); */
+    /* margin: 5px 0 0 5px; */
+    text-align: left;
+}
+
+#sheet-music-midi {
+    display: inline-block;
+    width: calc(100% - 10px);
+    height: 25px;
+    background-color: rgb(156, 140, 46);
+    /* width: 100%;
+    height: 500px; */
+    /* background-color: rgb(255, 255, 255); */
+    /* margin: 5px 0 0 5px; */
+    text-align: left;
+}

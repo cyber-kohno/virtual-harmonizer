@@ -3,7 +3,7 @@
     height: 200px;
 }
 
-input {
+#system_cont-setting>input {
     margin: 10px auto;
     width: 200px;
     height: 60px;

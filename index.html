@@ -5,10 +5,17 @@
 <!-- <meta content="text/html; charset=shift_jis" http-equiv="Content-Type" /> -->
 <meta http-equiv="content-type" charset="utf-8">
 <link type="text/css" rel="stylesheet" href="css/desty.css">
+<link type="text/css" rel="stylesheet" href="css/abcjs-audio.css">
 <link type="text/css" rel="stylesheet" href="css/common.css">
 <link type="text/css" rel="stylesheet" href="css/test.css">
 <link type="text/css" rel="stylesheet" href="css/test_footer.css">
+<link type="text/css" rel="stylesheet" href="css/backing.css">
+<link type="text/css" rel="stylesheet" href="css/chord.css">
 <link type="text/css" rel="stylesheet" href="css/setting.css">
+<link type="text/css" rel="stylesheet" href="css/score.css">
+<link type="text/css" rel="stylesheet" href="css/score-sheet.css">
+<link type="text/css" rel="stylesheet" href="css/score-floatwnd.css">
+<link type="text/css" rel="stylesheet" href="css/score-footer.css">
 <title>Virtual Harmonizer</title>
 </head>
 
@@ -16,14 +23,17 @@
     <div class="main">
         <div id="system">
             <div class="tab-list">
-                <div class="tab-menu" onclick="selectTab(this)"><span>Test</span></div>
-                <div class="tab-menu disable" onclick="selectTab(this)"><span>List</span></div>
-                <div class="tab-menu disable" onclick="selectTab(this)"><span>Note</span></div>
-                <div class="tab-menu disable" onclick="selectTab(this)"><span>Backing</span></div>
-                <div class="tab-menu disable" onclick="selectTab(this)"><span>Preview</span></div>
+                <div class="tab-menu" onclick="selectTab(this)"><span>Account</span></div>
+                <div class="tab-menu" onclick="selectTab(this)"><span>Playing</span></div>
+                <div class="tab-menu" onclick="selectTab(this);"><span>Score</span></div>
+                <div class="tab-menu" onclick="selectTab(this)"><span>Backing</span></div>
+                <div class="tab-menu" onclick="selectTab(this)"><span>Chord</span></div>
+                <div class="tab-menu disable" onclick="selectTab(this)"><span>Sampler</span></div>
                 <div class="tab-menu" onclick="selectTab(this)"><span>Setting</span></div>
             </div>
             <div class="cont-list">
+                <div class="contents" id="system_cont-account">
+                </div>
                 <div class="contents" id="system_cont-test" tabindex="999">
                     <div id="chord-box">
                         <table>
@@ -68,13 +78,182 @@
                         </div>
                     </div>
                 </div>
-                <div class="contents" id="system_cont-list">
-                </div>
-                <div class="contents" id="system_cont-note">
+                <div class="contents" id="system_cont-score">
+                    <!-- <div>
+                        <div id="score-tree" tabindex="999">
+                        </div>
+                    </div> -->
+                    <div class="contents" id="scoretab">
+                        <div class="tab-list">
+                            <div class="tab-menu" onclick="selectTab(this)"><span>List</span></div>
+                            <div class="tab-menu" onclick="selectTab(this)"><span>Note</span></div>
+                            <div class="tab-menu" onclick="selectTab(this); ScoreSheetTab.initSheetMusic()"><span>Sheet
+                                    Music</span></div>
+                            <div class="tab-menu" onclick="selectTab(this)"><span>Backing</span></div>
+                            <div class="tab-menu" onclick="selectTab(this); ScoreSourceTab.convertSource()">
+                                <span>Source</span></div>
+                            <div class="tab-menu" onclick="selectTab(this)"><span>Preview</span></div>
+                        </div>
+                        <div class="cont-list">
+                            <div class="contents" id="scoretab_cont-list" tabindex="999">
+                            </div>
+                            <div class="contents" id="scoretab_cont-note" tabindex="999">
+                                <div>
+                                    <div id="score-note">
+                                        <div id="score-outline-root">
+                                            <div class="active"><span>Section</span></div>
+                                        </div>
+                                        <div id="score-list-root" tabindex="999">
+                                        </div>
+                                        <div id="chord-symbol-list" class="score-floatwnd hidden" tabindex="999">
+                                            <div></div>
+                                            <div><canvas id="symbol-view"></canvas></div>
+                                        </div>
+                                        <div id="score-backing-selector" class="score-floatwnd hidden" tabindex="999">
+                                            <div class="info"></div>
+                                            <div class="editor">
+                                                <div class="pattern"></div>
+                                                <div class="struct"></div>
+                                            </div>
+                                            <div class="keyboad"><canvas id="struct-view"></canvas></div>
+                                        </div>
+                                    </div>
+                                    <div id="score-footer">
+                                        <div class="tab-list">
+                                            <div class="tab-menu" onclick="selectTab(this)"><span>Keyboad</span></div>
+                                            <div class="tab-menu" onclick="selectTab(this)"><span>Input</span>
+                                            </div>
+                                            <div class="tab-menu disable" onclick="selectTab(this)"><span>Default</span>
+                                            </div>
+                                            <div class="tab-menu disable" onclick="selectTab(this)"><span>File</span>
+                                            </div>
+                                        </div>
+                                        <div class="cont-list">
+                                            <div class="contents" id="score-footer_cont-keyboad">
+                                                <div id="score-preview-keyboad">
+                                                    <canvas id="score-preview-keyboad-can"></canvas>
+                                                </div>
+                                            </div>
+                                            <div class="contents" id="score-footer_cont-input">
+                                            </div>
+                                            <div class="contents" id="score-footer_cont-default">
+                                            </div>
+                                            <div class="contents" id="score-footer_cont-file">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div id="score-detail">
+                                        <!-- <textarea id="score-element-json"></textarea> -->
+                                        <div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="contents" id="scoretab_cont-sheet">
+                                <div class="contents" id="sheet-music-view"></div>
+                                <div class="contents" id="sheet-music-midi"></div>
+                            </div>
+                            <div class="contents" id="scoretab_cont-backing" tabindex="999">
+                            </div>
+                            <div class="contents" id="scoretab_cont-source" tabindex="999">
+                                <textarea id="score-all-json"></textarea>
+                            </div>
+                            <div class="contents" id="scoretab_cont-preview" tabindex="999">
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="contents" id="system_cont-backing">
+                    <div>
+                        <div id="backing-tree" tabindex="999">
+                        </div>
+                    </div>
+                    <div>
+                        <div id="backing-info">
+                            <div class="name">
+                                <div class="small-label">name:</div>
+                                <input type="number">
+                            </div>
+                            <div class="sustain">
+                                <div class="small-label">sustain:</div>
+                                <input type="number">
+                            </div>
+                        </div>
+                        <!-- <div id="backing-test">
+                            <div>
+                                <div class="small-label">bpm:</div>
+                                <input type="number">
+                            </div>
+                            <div>
+                                <div class="small-label">chord:</div>
+                                <select></select>
+                                <select class="symbol"></select>
+                                <div class="small-button list" onclick="BackingTab.createStructList()">list</div>
+                            </div>
+                            <div>
+                                <div class="small-label">assign:</div>
+                                <input type="text" class="struct">
+                                <div class="small-button list" onclick="BackingTab.syncStruct()">sync</div>
+                            </div>
+                            <div>
+                            </div>
+                        </div> -->
+                        <div id="backing-main">
+                            <div id="backing-tabs" class="tabbase">
+                                <div class="tab-list">
+                                    <div class="tab-menu" onclick="selectTab(this)"><span>EDITOR</span></div>
+                                    <div class="tab-menu" onclick="selectTab(this); BackingTab.initSource()">
+                                        <span>SOURCE</span></div>
+                                </div>
+                                <div class="cont-list">
+                                    <div id="backing-base" class="contents" tabindex="999">
+                                    </div>
+                                    <div id="backing-source" class="contents" tabindex="999">
+                                        <textarea cols="30" rows="10"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="backing-operation">
+                            <div class="small-button" onclick="BackingTab.saveBacking()">save</div>
+                            <div class="small-button">reset</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="contents" id="system_cont-preview">
+                <div class="contents" id="system_cont-chord">
+                    <div>
+                        <div id="chord-def-list" tabindex="999">
+                        </div>
+                    </div>
+                    <div>
+                        <div id="chord-def-param">
+                            <div>
+                                <div class="small-label">parent:</div>
+                                <input type="text">
+                            </div>
+                            <div>
+                                <div class="small-label">symbol:</div>
+                                <input type="text">
+                            </div>
+                        </div>
+                        <div id="chord-def-struct">
+                            <div></div>
+                            <div>
+                                <canvas id="chord-view"></canvas>
+                            </div>
+                        </div>
+                        <div id="chord-def-deployment">
+                            <div></div>
+                        </div>
+                        <div id="chord-def-operation">
+                            <div class="small-button" onclick="saveChordDef()">save</div>
+                            <div class="small-button">reset</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="contents" id="system_cont-sampler">
                 </div>
                 <div class="contents" id="system_cont-setting">
                 </div>
@@ -83,10 +262,28 @@
     </div>
     <!-- <script src="http://chamu.org/tonejs/Tone.min.js"></script> -->
     <script type="text/javascript" src="js/Tone.min.js"></script>
+    <script type="text/javascript" src="js/abcjs_midi_5.12.0-min.js"></script>
+    <script type="text/javascript" src="js/define.js"></script>
+    <script type="text/javascript" src="js/utils.js"></script>
     <script type="text/javascript" src="js/system.js"></script>
     <script type="text/javascript" src="js/test.js"></script>
     <script type="text/javascript" src="js/test_footer.js"></script>
     <script type="text/javascript" src="js/keyboad.js"></script>
+    <script type="text/javascript" src="js/keyboad2.js"></script>
+    <script type="text/javascript" src="js/keyboad3.js"></script>
+    <script type="text/javascript" src="js/backing_tree.js"></script>
+    <script type="text/javascript" src="js/backing.js"></script>
+    <script type="text/javascript" src="js/chord.js"></script>
+    <script type="text/javascript" src="js/chord_tree.js"></script>
+    <script type="text/javascript" src="js/score.js"></script>
+    <script type="text/javascript" src="js/score_input.js"></script>
+    <script type="text/javascript" src="js/score_sidebar.js"></script>
+    <script type="text/javascript" src="js/score_footer.js"></script>
+    <script type="text/javascript" src="js/score_floatwnd.js"></script>
+    <script type="text/javascript" src="js/score_tree.js"></script>
+    <script type="text/javascript" src="js/score-source.js"></script>
+    <script type="text/javascript" src="js/score-sheet.js"></script>
+    <script type="text/javascript" src="js/json.js"></script>
     <script type="text/javascript" src="js/setting.js"></script>
 </body>
 

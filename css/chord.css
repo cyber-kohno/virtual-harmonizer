@@ -1,0 +1,356 @@
+/* 左側のコンポーネント */
+#system_cont-chord>div {
+    display: inline-block;
+    height: 100%;
+    vertical-align: top;
+    overflow: hidden;
+}
+
+/* コードリスト */
+#chord-def-list {
+    display: inline-block;
+    height: 100%;
+    width: 200px;
+    background-color: rgb(250, 235, 215);
+    outline: none;
+    overflow: auto;
+    /* padding-top: 1px; */
+}
+
+/* ツリーアイテムの行情報 */
+#chord-def-list>div{
+    display: block;
+    height: 32px;
+    margin-top: 5px;
+    /* background-color: #fff; */
+    width: 100%;
+    text-align: left;
+}
+
+/* ツリーアイテムの枠要素 */
+#chord-def-list>div>div{
+    display: inline-block;
+    /* background-color: #f99; */
+    border-radius: 3px;
+    /* border: solid 1px #777; */
+    margin-top: 1px;
+    margin-left: 5px;
+    text-align: center;
+    -webkit-user-select: none;
+}
+
+/* ルート要素→フォーカス時 */
+#chord-def-list>div>div.root.active{
+    background-color: #ff0;
+}
+/* コード定義要素→フォーカス時 */
+#chord-def-list>div>div.chord-def.active{
+    background-color: #af0;
+}
+
+/* 要素の文字 */
+#chord-def-list>div>div>span{
+    display: inline-block;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 30px;
+}
+
+/* ルート要素の文字 */
+#chord-def-list>div>div.root>span{
+    color: #667;
+    margin: 0 10px;
+}
+
+/* コード定義要素の文字 */
+#chord-def-list>div>div.chord-def>span:nth-child(1){
+    color: rgba(0, 0, 0, 0.2);
+    margin-left: 10px;
+}
+#chord-def-list>div>div.chord-def>span:nth-child(2){
+    color: rgba(21, 0, 212, 0.9);
+}
+#chord-def-list>div>div.chord-def>span:nth-child(3){
+    color: rgba(0, 0, 0, 0.2);
+    margin-right: 10px;
+}
+
+/* 右側のコンポーネント */
+#system_cont-chord>div:nth-child(2) {
+    margin-left: 3px;
+    width: calc(100% - 203px);
+}
+
+/* #system_cont-chord>div:nth-child(2)>div {
+    margin-bottom: 31px;
+} */
+
+/* パラメータ */
+#chord-def-param {
+    height: 70px;
+    background-color: #eee;
+    margin-bottom: 3px;
+    overflow: hidden;
+}
+
+#chord-def-param>div {
+    display: block;
+    text-align: left;
+    margin: 6px 0 0 5px;
+    /* background-color: chartreuse; */
+    height: 26px;
+}
+
+#chord-def-param>div>.small-label {
+    /* border: solid 1px #000; */
+    width: 70px;
+    padding: 4px 0;
+}
+
+#chord-def-param>div>input {
+    display: inline-block;
+    margin: 3px 0 0 10px;
+    width: 400px;
+    height: calc(100% - 6px);
+    background-color: rgb(255, 255, 255);
+    color: #000;
+    border: solid 1px rgb(37, 37, 37);
+    border-radius: 3px;
+    vertical-align: top;
+    font-size: 14px;
+}
+
+#chord-def-param>div:nth-child(1)>input {
+    background-color: transparent;
+    pointer-events: none;
+    color: #00f;
+}
+
+#chord-def-struct {
+    display: block;
+    height: 240px;
+    background-color: #eee;
+    margin-bottom: 3px;
+    text-align: left;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+
+#chord-def-struct>div:nth-child(1){
+    display: block;
+    width: 100%;
+    height: 80px;
+}
+
+#chord-def-struct>div:nth-child(1)>.col{
+    display: inline-block;
+    margin: 5px 0 0 5px ;
+    width: 50px;
+    height: calc(100% - 10px);
+    /* background-color: rgba(0, 0 ,255, 0.04); */
+    border-radius: 5px;
+    border: solid 2px rgba(0, 0, 0, 0.15);
+    vertical-align: top;
+    user-select: none;
+}
+
+#chord-def-struct>div:nth-child(1)>.col.active{
+    background-color: rgb(255, 255, 164);
+}
+#chord-def-struct>div:nth-child(1)>.col.active.lock{
+    /* background-color: rgb(255, 183, 183); */
+    /* border: solid 2px #f00; */
+    /* border: solid 2px rgb(4, 0, 255); */
+    opacity: 0.5;
+}
+
+#chord-def-struct>div:nth-child(1)>.col>div:nth-child(1) {
+    margin: 5px 0;
+    display: block;
+    height: 12px;
+    /* background-color: #fee; */
+    text-align: center;
+}
+#chord-def-struct>div:nth-child(1)>.col>div:nth-child(1)>span {
+    color: rgb(3, 0, 173);
+    font-size: 12px;
+    /* font-weight: 600; */
+    /* font-weight: 600;s */
+}
+
+#chord-def-struct>div:nth-child(1)>.col>div:nth-child(2) {
+    margin: 5px 0;
+    display: block;
+    height: 60px;
+    /* background-color: rgba(0, 255 ,255, 0.1); */
+}
+
+#chord-def-struct>div:nth-child(1)>.col>div>div {
+    border: solid 1px #ccc;
+    border-radius: 0 0 5px 5px;
+}
+
+#chord-def-struct>div:nth-child(1)>.col>div>.white{
+    margin: 0 3px;
+    width: calc(100% - 6px);
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+#chord-def-struct>div:nth-child(1)>.col>div>.black{
+    margin: 0 6px;
+    width: calc(100% - 12px);
+    height: calc(100% - 20px);
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+#chord-def-struct>div:nth-child(1)>.col>div:nth-child(2) {
+    display: block;
+    margin: 5px;
+    width: calc(100% - 10px);
+    height: calc(100% - 100px);
+    /* background-color: rgba(2, 0, 250, 0.3); */
+}
+
+#chord-def-struct>div:nth-child(1)>.col>div:nth-child(2)>div {
+    display: block;
+    margin-bottom: 2px;
+    height: 18px;
+    border: solid 1px rgba(0, 155, 0, 1);
+    background-color: rgb(183, 255, 183);
+    text-align: center;
+    border-radius: 4px;
+}
+
+#chord-def-struct>div:nth-child(1)>.col>div:nth-child(2)>div.active {
+    background-color: rgb(229, 255, 0);
+}
+
+#chord-def-struct>div:nth-child(1)>.col>div:nth-child(2)>div>span {
+    display: inline-block;
+    margin-top: 4px;
+    color: rgba(0, 155, 0, 1);
+    font-size: 10px;
+    /* font-weight: 600; */
+}
+
+/* ピアノ鍵盤 */
+#chord-def-struct>div:nth-child(2) {
+    display: block;
+    margin-top: 5px;
+    height: 148px;
+    width: 100%;
+    background-color: rgb(54, 54, 54);
+}
+
+#chord-def-deployment {
+    height: calc(100% - 358px);
+    background-color: #eee;
+    margin-bottom: 3px;
+}
+
+#chord-def-deployment>div{
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+}
+/* ライン */
+#chord-def-deployment>div>div{
+    display:  block;
+    width: 100%;
+    margin-top: 5px;
+    /* background-color: rgba(237, 100, 168, 0.301); */
+    text-align: left;
+}
+
+#chord-def-deployment>div>div>.small-button:nth-child(1){
+    background-color: transparent;
+    border: none;
+}
+#chord-def-deployment>div>div>.small-button{
+    font-size: 14px;
+    margin: 0 0 0 5px;
+    width: 60px;
+    height: 40px;
+    vertical-align: middle;
+    text-align: center;
+    background-color: rgb(0, 0, 156);
+}
+#chord-def-deployment>div>div>.small-button:hover{
+    background-color: rgb(116, 116, 255);
+}
+#chord-def-deployment>div>div>.small-button.active{
+    background-color: rgb(182, 73, 0);
+}
+
+#chord-def-deployment>div>div:nth-child(n + 2) {
+    margin-top: 3px;
+}
+
+#chord-def-deployment>div>div:nth-child(n + 2)>div{
+    display: inline-block;
+    font-size: 14px;
+    margin: 0 0 0 5px;
+    width: 60px;
+    height: 40px;
+    background-color: rgba(235, 237, 100, 0.226);
+    vertical-align: middle;
+    text-align: center;
+    border: solid 1px rgba(14, 0, 36, 0.322);
+}
+
+
+#chord-def-deployment>div>div:nth-child(n + 2)>div:nth-child(1){
+    text-align: left;
+    background-color: rgb(255, 255, 255);
+    border: none;
+}
+
+#chord-def-deployment>div>div:nth-child(n + 2)>div:nth-child(1)>div{
+    /* display: inline-block; */
+    margin: 7px 5px;
+    width: calc(100% - 10px);
+    /* background-color: ivory; */
+}
+
+#chord-def-deployment>div>div:nth-child(n + 2)>div:nth-child(1)>div>span{
+    font-size: 14px;
+}
+
+#chord-def-deployment>div>div:nth-child(n + 2)>div:nth-child(1)>div>span:nth-child(1){
+    color: red;
+    font-weight: 600;
+}
+#chord-def-deployment>div>div:nth-child(n + 2)>div:nth-child(1)>div>span:nth-child(2){
+    font-size: 10px;
+    color: rgb(172, 172, 172);
+    margin-left: 4px;
+}
+
+/* ボディ要素 */
+#chord-def-deployment>div>div:nth-child(n + 2)>div:nth-child(n + 2){
+    /* display: inline-block; */
+    padding: 4px 15px;
+    font-size: 15px;
+    font-weight: initial;
+    color: rgb(6, 68, 0);
+    user-select: none;
+    border: solid 1px rgba(0, 0, 0, 0.096);
+}
+
+/* オペレーション要素 */
+#chord-def-operation {
+    height: 40px;
+    background-color: #eee;
+    text-align: left;
+}
+
+#chord-def-operation>.small-button {
+    display: inline-block;
+    margin: 7px 0 0 5px;
+}
+
+#chord-def-operation>.small-button:hover {
+    background-color: rgb(47, 196, 196);
+}

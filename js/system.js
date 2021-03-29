@@ -1,18 +1,27 @@
-
 window.onload = function () {
     // ページ読み込み時に実行したい処理
 
     // 右クリック無効
     document.oncontextmenu = function () { return false; }
+    window.addEventListener("keydown", function(e) {
+        // space and arrow keys
+        if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+            e.preventDefault();
+        }
+    }, false);
 
     initSynth();
 
     /* タブの初期活性 */
-    setSelectTab('system', 0);
+    setSelectTab('system', 2);
+    setSelectTab('scoretab', 1);
     buildTuningBox();
     buildChordBox();
-
+    buildChordTab();
     buildSettingTab();
+
+    BackingTab.build();
+    ScoreTab.initScoreTab();
 }
 
 function initSynth() {

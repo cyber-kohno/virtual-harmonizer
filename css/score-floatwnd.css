@@ -1,0 +1,246 @@
+.score-floatwnd {
+    display: block;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.829);
+    border: solid 2px rgb(255, 0, 0);
+    left: 0;
+    top: 0;
+    z-index: 99;
+    text-align: left;
+    outline: none;
+}
+
+#chord-symbol-list {
+    width: 450px;
+    height: 270px;
+}
+
+#chord-symbol-list>div:nth-child(1) {
+    display: block;
+    height: 156px;
+    overflow-y: auto;
+}
+
+#chord-symbol-list>div:nth-child(1)>div {
+    display: inline-block;
+    height: 30px;
+    text-align: left;
+}
+
+#chord-symbol-list>div:nth-child(1)>div.active {
+    background-color: rgba(255, 255, 255, 0.26);
+}
+
+#chord-symbol-list>div:nth-child(1)>div>span {
+    display: inline-block;
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    margin: 5px 10px;
+}
+
+#chord-symbol-list>div:nth-child(1)>div.active>span {
+    color: rgb(255, 0, 0);
+}
+
+#chord-symbol-list>div:nth-child(2) {
+    display: block;
+    height: 110px;
+    background-color: rgb(0, 0, 0);
+}
+
+#score-backing-selector {
+    width: 500px;
+    height: 477px;
+}
+
+#score-backing-selector>div {
+    display: block
+}
+
+#score-backing-selector>.info {
+    height: 72px;
+    background-color: rgba(255, 255, 255, 0.164);
+}
+
+#score-backing-selector>.info>div {
+    display: inline-block;
+    height: 20px;
+    width: 100%;
+    margin: 2px 0;
+    /* background-color: rgba(137, 43, 226, 0.267); */
+}
+
+#score-backing-selector>.info>div>span {
+    display: inline-block;
+    margin-top: 2px;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+#score-backing-selector>.info>div>span:nth-child(1) {
+    margin-left: 5px;
+    width: 60px;
+    color: white;
+    background-color: rgba(238, 130, 238, 0.082);
+}
+
+#score-backing-selector>.info>div>span:nth-child(2) {
+    margin-left: 15px;
+    width: 330px;
+    color: rgb(255, 81, 0);
+}
+
+#score-backing-selector>.editor {
+    height: 300px;
+}
+#score-backing-selector>.editor>div {
+}
+
+#score-backing-selector>.editor>.pattern {
+    background-color: rgba(0, 0, 255, 0.103);
+    height: 130px;
+}
+
+#score-backing-selector>.editor>.pattern>div {
+    display: block;
+    height: 20px;
+    margin: 1px 1px;
+    background-color: rgba(245, 245, 245, 0.096);
+}
+
+#score-backing-selector>.editor>.pattern>div>span {
+    display: inline-block;
+    font-size: 15px;
+    font-weight: 600;
+    margin-top: 3px;
+}
+
+#score-backing-selector>.editor>.pattern>div>span:nth-child(1) {
+    color: red;
+    margin-left: 5px;
+}
+
+#score-backing-selector>.editor>.pattern>div>span:nth-child(2) {
+    color: rgb(255, 255, 255);
+    margin-left: 2px;
+}
+
+#score-backing-selector>.editor>.struct {
+    background-color: rgba(0, 236, 31, 0.103);
+    height: 170px;
+}
+
+#score-backing-selector>.editor>.struct>div {
+    display: inline-block;
+    margin: 0 4px;
+    width: calc(100% - 8px);
+    text-align: left;
+}
+
+#score-backing-selector>.editor>.struct>.header {
+    background-color: rgba(255, 255, 0, 0.514);
+    height: 20px;
+    margin-top: 2px;
+}
+
+#score-backing-selector>.editor>.struct>.header>div {
+    display: inline-block;
+    width: 64px;
+    height: 18px;
+    margin: 1px 2px;
+    text-align: center;
+    background-color: rgba(64, 224, 208, 0.158);
+}
+#score-backing-selector>.editor>.struct>.header>div:nth-child(1) {
+    margin-left: 82px;
+}
+
+#score-backing-selector>.editor>.struct>.header>div>span {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 1px;
+    color: white;
+}
+
+#score-backing-selector>.editor>.struct>.body {
+    background-color: rgba(255, 255, 0, 0.514);
+    height: 122px;
+    margin-top: 2px;
+    overflow: hidden;
+}
+
+#score-backing-selector>.editor>.struct>.body>.line {
+    display: block;
+    width: 100%;
+    background-color: rgba(25, 0, 255, 0.514);
+    height: 20px;
+    margin: 1px 0 0 0;
+}
+#score-backing-selector>.editor>.struct>.body>.line:nth-child(1) {
+    margin-top: 0;
+}
+#score-backing-selector>.editor>.struct>.body>.line>div {
+    display: inline-block;
+    height: 100%;
+}
+
+#score-backing-selector>.editor>.struct>.body>.line>.octave {
+    width: 80px;
+    background-color: rgba(0, 17, 17, 0.294);
+    text-align: center;
+}
+
+#score-backing-selector>.editor>.struct>.body>.line>.octave>span {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 1px;
+    color: rgb(255, 253, 119);
+}
+
+#score-backing-selector>.editor>.struct>.body>.line>.sounds {
+    width: calc(100% - 80px);
+    background-color: rgba(168, 255, 27, 0.219);
+}
+
+#score-backing-selector>.editor>.struct>.body>.line>.sounds>div {
+    display: inline-block;
+    width: 64px;
+    height: 18px;
+    margin: 1px 2px;
+    text-align: center;
+    background-color: rgba(64, 224, 208, 0.158);
+}
+
+#score-backing-selector>.editor>.struct>.body>.line>.sounds>div.active {
+    background-color: rgba(255, 36, 138, 0.308);
+}
+
+#score-backing-selector>.editor>.struct>.body>.line>.sounds>div>span {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 1px;
+    color: white;
+}
+
+#score-backing-selector>.editor>.struct>.asigns {
+    background-color: rgba(0, 0, 0, 0.363);
+    height: 20px;
+    margin-top: 2px;
+}
+
+#score-backing-selector>.editor>.struct>.asigns>span {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 2px;
+    color: white;
+}
+
+#score-backing-selector>.keyboad {
+    height: 100px;
+    overflow-x: auto;
+}
