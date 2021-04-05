@@ -24,7 +24,10 @@ class ScoreTab {
     }
 
     static buildScoreNote() {
-        ScoreTab.initDefaultElements();
+        ScoreTab.initDefaultElements(null);
+        const rootEl = document.getElementById('score-list-root');
+        rootEl.children[1].insertAdjacentHTML('afterend', ScoreTab.getSectionItemHtml(null));
+        ScoreTab.updateBaseInfo();
         ScoreInput.buildNoteKeyEvent();
     }
 
@@ -39,10 +42,40 @@ class ScoreTab {
     }
 
     static addSectionItem(cur) {
-        const params = {};
-        params.part = 'Section';
-        params.chNo = null;
-        params.partNo = null;
+        cur.insertAdjacentHTML('afterend', ScoreTab.getSectionItemHtml(null));
+        const newEl = cur.nextElementSibling;
+        newEl.classList.add('new');
+        setTimeout(() => {
+            newEl.classList.remove('new');
+        }, 300);
+
+        // const outlineEl = document.getElementById('score-outline-root');
+        // const nodeList = document.getElementById('score-list-root').children;
+        // let cnt = -1;
+        // for (let i = 0; i < nodeList.length; i++) {
+        //     const node = nodeList[i];
+        //     if (newEl == node) break;
+        //     if (node.classList.contains('section')) cnt++;
+        // }
+        // outlineEl.children[cnt].insertAdjacentHTML('afterend', `
+        //     <div><span>${newParams.part}</span></div>
+        // `);
+
+        const newParams = JSON.parse(newEl.children[2].innerHTML);
+
+        ScoreTab.updateBaseInfo();
+        ScoreTab.selectScoreItem(cur);
+    }
+
+    static getSectionItemHtml(params) {
+
+        if (params == null) {
+            params = {};
+            params.type = 'section';
+            params.part = 'Section';
+            params.chNo = null;
+            params.partNo = null;
+        }
 
         const html = `
             <div class="section" onclick="ScoreTab.selectScoreItem(this)" onkeydown="ScoreTab.scoreItemKeyEvent(this, event)">
@@ -51,50 +84,47 @@ class ScoreTab {
                 <div class="param">${JSON.stringify(params)}</div>
             </div>
         `;
-        cur.insertAdjacentHTML('afterend', html);
+        return html;
+    }
+
+    static addScoreChordItem(cur) {
+        cur.insertAdjacentHTML('afterend', ScoreTab.getScoreChordItemHtml(null));
+        // cur.insertAdjacentHTML('afterend', html);
+
         const newEl = cur.nextElementSibling;
+        newEl.classList.add('new');
+        newEl.classList.add('current');
         setTimeout(() => {
             newEl.classList.remove('new');
         }, 300);
 
-
-        const outlineEl = document.getElementById('score-outline-root');
-        const nodeList = document.getElementById('score-list-root').children;
-        let cnt = -1;
-        for (let i = 0; i < nodeList.length; i++) {
-            const node = nodeList[i];
-            if (newEl == node) break;
-            if (node.classList.contains('section')) cnt++;
-        }
-
-        outlineEl.children[cnt].insertAdjacentHTML('afterend', `
-            <div><span>${params.part}</span></div>
-        `);
-
         ScoreTab.updateBaseInfo();
-
-        ScoreTab.selectScoreItem(cur);
+        ScoreTab.selectScoreItem(cur.nextElementSibling);
     }
 
-    static addScoreChordItem(cur) {
-        const params = {};
-        params.baseInfo = null;
-        params.degreeIndex = -1;
-        // params.semitone = 'none';
-        params.isFlat = true;
-        params.symbol = SYMBOL_PARAMS_LIST[0]; //暫定で初期値メジャー3和音
-        params.sustain4 = 2;
-        params.sustain8 = 0;
-        params.sustain16 = 0;
-        params.denominator = null;
-        params.posBar = -1;
-        params.posBeat4 = -1;
-        params.posBeat8 = -1;
-        params.posBeat16 = -1;
-        params.posSec = 0;
+    static getScoreChordItemHtml(params) {
+
+        if (params == null) {
+            params = {};
+            params.type = 'chord';
+            params.baseInfo = null;
+            params.degreeIndex = -1;
+            // params.semitone = 'none';
+            params.isFlat = true;
+            params.symbol = SYMBOL_PARAMS_LIST[0]; //暫定で初期値メジャー3和音
+            params.sustain4 = 2;
+            params.sustain8 = 0;
+            params.sustain16 = 0;
+            params.denominator = null;
+            params.posBar = -1;
+            params.posBeat4 = -1;
+            params.posBeat8 = -1;
+            params.posBeat16 = -1;
+            params.posSec = 0;
+        }
 
         const html = `
-            <div class="chord-range new current"
+            <div class="chord-range"
                 onclick="ScoreTab.selectScoreItem(this)"
             >
                 <div class="degree"></div>
@@ -105,19 +135,13 @@ class ScoreTab {
                 <div class="param">${JSON.stringify(params)}</div>
             </div>
         `;
-        cur.insertAdjacentHTML('afterend', html);
-        const newEl = cur.nextElementSibling;
-        setTimeout(() => {
-            newEl.classList.remove('new');
-        }, 300);
-
-        ScoreTab.updateBaseInfo();
-
-        ScoreTab.selectScoreItem(cur.nextElementSibling);
+        return html;
     }
 
     static updateBaseInfo() {
         const rootEl = document.getElementById('score-list-root');
+        const outlineEl = document.getElementById('score-outline-root');
+        outlineEl.innerHTML = '';
         const list = rootEl.children;
         let baseInfo = null;
         let posBar = 1;
@@ -146,6 +170,10 @@ class ScoreTab {
                 const params = JSON.parse(paramsEl.innerHTML);
                 params.no = secIndex;
                 paramsEl.innerHTML = JSON.stringify(params);
+
+                outlineEl.insertAdjacentHTML('beforeend', `
+                    <div><span>${params.part}</span></div>
+                `);
                 secIndex++;
             }
             if (element.classList.contains('chord-range')) {
@@ -309,37 +337,44 @@ class ScoreTab {
         return `${keyList[(params.baseInfo.rootKeyIndex + params.degreeIndex) % 12]}${params.symbol.name}`;
     }
 
-    static initDefaultElements() {
+    static initDefaultElements(initParams) {
         const rootEl = ScoreTab.getTimelineRootEl();
-
-        const baseInfo = {};
-        baseInfo.tempo = 100;
-        baseInfo.rythm = 0;
-        baseInfo.rootKeyIndex = 0;
-        baseInfo.scale = 0;
-
+        // const outlineEl = document.getElementById('score-outline-root');
+        // outlineEl.innerHTML = `
+        //     <div class="active"><span>Section</span></div>
+        // `;
         rootEl.innerHTML = `
-        <div class="init" onclick="ScoreTab.selectScoreItem(this)">
-            <div>
-                <div><span>temp: </span><span>100</span></div>
-                <div><span>rythm: </span><span>4/4</span></div>
-                <div><span>key: </span><span>C</span></div>
-                <div><span>scale: </span><span>major</span></div>
+            ${ScoreTab.getInitItemHtml(initParams)}
+            <div class="start">
+                <span>START</span>
             </div>
-            <div class="param">${JSON.stringify(baseInfo)}</div>
-        </div>
-        <div class="start">
-            <span>START</span>
-        </div>
-        <div class="section" onclick="ScoreTab.selectScoreItem(this)" onkeydown="ScoreTab.scoreItemKeyEvent(this, event)">
-            <div><span>Section</span></div>
-            <div></div>
-            <div class="param">${JSON.stringify({ no: 0, part: 'Section' })}</div>
-        </div>
-        <div class="end">
-            <span>END</span>
-        </div>
-    `;
+            <div class="end">
+                <span>END</span>
+            </div>
+        `;
+    }
+
+    static getInitItemHtml(params) {
+        if (params == null) {
+            params = {};
+            params.type = 'init'
+            params.tempo = 100;
+            params.rythm = 0;
+            params.rootKeyIndex = 0;
+            params.scale = 0;
+        }
+        const html = `
+            <div class="init" onclick="ScoreTab.selectScoreItem(this)">
+                <div>
+                    <div><span>temp: </span><span></span></div>
+                    <div><span>rythm: </span><span></span></div>
+                    <div><span>key: </span><span></span></div>
+                    <div><span>scale: </span><span></span></div>
+                </div>
+                <div class="param">${JSON.stringify(params)}</div>
+            </div>
+        `;
+        return html;
     }
 
     static getTimelineRootEl() {
@@ -489,7 +524,7 @@ class ScoreTab {
         const degreeIndex = params.degreeIndex;
         const intervals = params.symbol.intervals.split(',');
 
-        const places = '1-0,2-0,2-1,2-2,3-0';
+        const places = '1-0,1-2,2-0,2-1,2-2,3-0';
         const indexes = [];
         const sounds = [];
         // 6オクターブ分処理する
@@ -518,32 +553,17 @@ class ScoreTab {
         let script = null;
         switch (sustain4) {
             case 4:
-                script = ScoreTab.getBacking(4, 'ballad02');
+                script = getBacking(4, 'pops01');
                 break;
             case 2:
-                script = BACKING_SAMPLE_LIST[3];
+                script = getBacking(2, 'pops01');
                 break;
             case 3:
-                script = BACKING_SAMPLE_LIST[4];
+                script = getBacking(3, 'ballad01');
                 break;
         }
         params.backingScript = script;
 
         return params;
-    }
-
-    static getBacking(sustain, name) {
-        const list = ScoreTab.getBackingList();
-        for (let i = 0; i < list.length; i++) {
-            const backing = list[i];
-            if (backing.sustain4 == sustain & backing.name == name) {
-                return backing;
-            }
-        }
-        return null;
-    }
-
-    static getBackingList() {
-        return BACKING_SAMPLE_LIST;
     }
 }

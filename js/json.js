@@ -1,8 +1,8 @@
 
 const BACKING_SAMPLE_LIST = [
     {
-        "name": "ballad01",
-        "sustain4": 4,
+        "name": "pops01",
+        "sustain4": 2,
         "channel": 5,
         "layers": [
             {

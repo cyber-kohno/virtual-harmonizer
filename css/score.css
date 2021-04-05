@@ -434,8 +434,27 @@
     background-color: rgb(82, 79, 79);
     color: rgba(255, 255, 255, 0.876);
     width: calc(100% - 4px);
-    height: calc(100% - 4px);
+    height: calc(100% - 32px);
     padding: 2px 0 0 2px;
     resize: none;
     text-align: left;
+}
+
+#scoretab_cont-source>.operation {
+    display: block;
+    height: 28px;
+    /* background-color: antiquewhite; */
+    text-align: left;
+}
+
+
+#scoretab_cont-source>.operation>.small-button {
+    margin-top: 5px;
+    margin-left: 4px;
+    background-color: rgba(25, 13, 68, 0.315);
+    border: solid 1px rgba(0, 0, 0, 0.308);
+}
+
+#scoretab_cont-source>.operation>.small-button:hover {
+    background-color: rgba(113, 107, 136, 0.315);
 }

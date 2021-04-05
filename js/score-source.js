@@ -16,9 +16,13 @@ class ScoreSourceTab {
         for (let i = 0; i < rootEl.children.length; i++) {
             const element = rootEl.children[i];
             if (element.classList.contains('init')) {
-
+                const paramsEl = element.children[1];
+                const params = JSON.parse(paramsEl.innerHTML);
+                elements.push(params);
             } else if (element.classList.contains('section')) {
-
+                const paramsEl = element.children[2];
+                const params = JSON.parse(paramsEl.innerHTML);
+                elements.push(params);
             } else if (element.classList.contains('chord-range')) {
                 const paramsEl = element.children[5];
                 const params = JSON.parse(paramsEl.innerHTML);
@@ -28,6 +32,6 @@ class ScoreSourceTab {
         json.elements = elements;
 
         const sourceEl = document.getElementById('score-all-json');
-        sourceEl.value = JSON.stringify(json, null, '  ');
+        sourceEl.value = JSON.stringify(json, null, '    ');
     }
 }

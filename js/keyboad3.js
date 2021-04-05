@@ -94,18 +94,19 @@ class KeyboadSwitchViewer {
 
             let whiteKeyColor = '#fff';
             const index = comvertWIndex(i);
-            // if (index != -1 && this.table[index].sus) {
-            //     whiteKeyColor = '#ffa';
-            //     if (this.table[index].down) {
-            //         whiteKeyColor = '#f80';
-            //     }
-            // }
-            if (index != -1) {
+            if (index != -1 && this.table[index].sus) {
+                whiteKeyColor = '#ffd';
                 const val = this.table[index].down;
-                if (val != 0) {
+                if (val) {
                     whiteKeyColor = val == 1 ? '#f85' : '#fc0';
                 }
             }
+            // if (index != -1) {
+            //     const val = this.table[index].down;
+            //     if (val != 0) {
+            //         whiteKeyColor = val == 1 ? '#f85' : '#fc0';
+            //     }
+            // }
 
             setColor(ctx, whiteKeyColor);
             this.drawsq(ctx, X, this.MARGIN_LENGTH, this.KEY_WIDTH, this.KEY_HEIGHT, 0, 3);
@@ -151,18 +152,19 @@ class KeyboadSwitchViewer {
 
             let blackKeyColor = '#222';
             const index = this.comvertBIndex(i);
-            // if (index != -1 && this.table[index].sus) {
-            //     blackKeyColor = '#ffa';
-            //     if (this.table[index].down) {
-            //         blackKeyColor = '#f80';
-            //     }
-            // }
-            if (index != -1) {
+            if (index != -1 && this.table[index].sus) {
+                blackKeyColor = '#775';
                 const val = this.table[index].down;
-                if (val != 0) {
+                if (val) {
                     blackKeyColor = val == 1 ? '#f80' : '#fc0';
                 }
             }
+            // if (index != -1) {
+            //     const val = this.table[index].down;
+            //     if (val != 0) {
+            //         blackKeyColor = val == 1 ? '#f80' : '#fc0';
+            //     }
+            // }
 
             switch (i % 7) {
                 case 0:

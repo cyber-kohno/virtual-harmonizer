@@ -145,21 +145,22 @@ class ScoreInput {
                     case 'o':
                         if (ScoreTab.timerQueue.length == 0) {
                             baseEl.classList.add('preview');
-                            const baseTime = new Date().getTime();
+                            // const baseTime = new Date().getTime();
                             let lastPosSec = 0;
-                            let isStart = false;
+                            let startSec = -1;
+                            let backingTaskList = [];
                             for (let i = 0; i < list.length; i++) {
                                 const objEl = list[i];
                                 if (objEl.classList.contains('chord-range')) {
-                                    // 選択している要素からスタート
-                                    // if (!isStart) {
-                                    //     if (objEl == chordEl) {
-                                    //         isStart = true;
-                                    //     } else {
-                                    //         continue;
-                                    //     }
-                                    // }
                                     const curParams = ScoreTab.getParams(objEl);
+                                    // 選択している要素からスタート
+                                    if (startSec == -1) {
+                                        if (objEl == chordEl) {
+                                            startSec = curParams.posSec;
+                                        } else {
+                                            continue;
+                                        }
+                                    }
                                     const asignSounds = curParams.asignSounds.split(',');
                                     const asignIndexes = curParams.asignIndexes.split(',');
                                     const bpm = curParams.baseInfo.tempo;
@@ -169,29 +170,74 @@ class ScoreInput {
                                     backingEnv.asignSounds = asignSounds;
                                     backingEnv.asignIndexes = asignIndexes;
                                     backingEnv.beatTime = beatTime;
+                                    // let adjust = getAdjustTime(baseTime);
+                                    // backingEnv.baseTime = baseTime;
+                                    backingEnv.posSec = curParams.posSec - startSec;// - adjust;
 
-                                    let adjust = getAdjustTime(baseTime);
                                     // 1小節の時間（ミリ秒）
                                     let time = beatTime * curParams.sustain4;
-                                    const id = setTimeout(() => {
-                                        ScoreTab.selectScoreItem(objEl);
-                                        if (script == null) {
-                                            playSynthSounds(asignSounds, time);
-                                            asignIndexes.map(Number);
-                                            ScoreFooterTab.pianoViewer.updateKeyboad();
-                                        } else {
-                                            playBackingScript(backingEnv, script, adjust, ScoreTab.timerQueue);
-                                        }
-                                    }, curParams.posSec);
-                                    ScoreTab.timerQueue.push(id);
-                                    lastPosSec = curParams.posSec + time;
+                                    const posSec = curParams.posSec - startSec;
+                                    // const id = setTimeout(() => {
+                                    //     ScoreTab.selectScoreItem(objEl);
+                                    // }, posSec);
+
+                                    if (script == null) {
+                                        // playSynthSounds(asignSounds, time);
+                                        // asignIndexes.map(Number);
+                                        // ScoreFooterTab.pianoViewer.updateKeyboad();
+                                    } else {
+                                        // playBackingScript(backingEnv, script, ScoreTab.timerQueue);
+                                        getBackingTask(backingEnv, script, backingTaskList);
+                                    }
+                                    // ScoreTab.timerQueue.push(id);
+                                    lastPosSec = posSec + time;
                                 }
                             }
-                            const id = setTimeout(() => {
+                            
+                            const baseTime = new Date().getTime();
+                            for (let i = 0; i < backingTaskList.length; i++) {
+                                const adjust = getAdjustTime(baseTime);
+                                const task = backingTaskList[i];
+
+                                ScoreTab.timerQueue.push(setTimeout(() => {
+                                    for (let k = 0; k < task.sounds.length; k++) {
+                                        const soundName = task.sounds[k];
+                                        synth.triggerAttack(soundName, '+0', task.velocity);
+                                    }
+                                }, task.curTime - adjust));
+                                ;
+
+                                ScoreTab.timerQueue.push(setTimeout(() => {
+                                }, task.curTime + task.noteTime - adjust));
+
+                                ScoreTab.timerQueue.push(setTimeout(() => {
+                                    for (let k = 0; k < task.sounds.length; k++) {
+                                        const soundName = task.sounds[k];
+                                        synth.triggerRelease(soundName);
+                                    }
+                                }, task.curTime + task.endTime - adjust + 10));
+                            }
+                            for (let i = 0; i < backingTaskList.length; i++) {
+                                const adjust = getAdjustTime(baseTime) - 1;
+                                const task = backingTaskList[i];
+
+                                ScoreTab.timerQueue.push(setTimeout(() => {
+                                    ScoreFooterTab.pianoViewer.downKeys(task.indexes, task.side);
+                                }, task.curTime - adjust));
+
+                                ScoreTab.timerQueue.push(setTimeout(() => {
+                                    ScoreFooterTab.pianoViewer.releaseKeys(task.indexes);
+                                }, task.curTime + task.noteTime - adjust));
+
+                                ScoreTab.timerQueue.push(setTimeout(() => {
+                                    ScoreFooterTab.pianoViewer.resetSustain(task.indexes);
+                                }, task.curTime + task.endTime - adjust));
+                            }
+                            // 最後まで到達したらプレビューを終了させる
+                            ScoreTab.timerQueue.push(setTimeout(() => {
                                 baseEl.classList.remove('preview');
                                 ScoreTab.timerQueue.splice(0);
-                            }, lastPosSec);
-                            ScoreTab.timerQueue.push(id);
+                            }, lastPosSec));
                         } else {
                             baseEl.classList.remove('preview');
                             ScoreTab.timerQueue.forEach(id => {

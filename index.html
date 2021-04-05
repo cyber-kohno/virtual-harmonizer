@@ -101,7 +101,7 @@
                                 <div>
                                     <div id="score-note">
                                         <div id="score-outline-root">
-                                            <div class="active"><span>Section</span></div>
+                                            <!-- <div class="active"><span>Section</span></div> -->
                                         </div>
                                         <div id="score-list-root" tabindex="999">
                                         </div>
@@ -159,6 +159,9 @@
                             </div>
                             <div class="contents" id="scoretab_cont-source" tabindex="999">
                                 <textarea id="score-all-json"></textarea>
+                                <div class="operation">
+                                    <div class="small-button" onclick="ScoreLoader.load()"><span>Sync</span></div>
+                                </div>
                             </div>
                             <div class="contents" id="scoretab_cont-preview" tabindex="999">
                             </div>
@@ -261,8 +264,8 @@
         </div>
     </div>
     <!-- <script src="http://chamu.org/tonejs/Tone.min.js"></script> -->
-    <script type="text/javascript" src="js/Tone.min.js"></script>
-    <script type="text/javascript" src="js/abcjs_midi_5.12.0-min.js"></script>
+    <script type="text/javascript" src="js/lib/Tone.min.js"></script>
+    <script type="text/javascript" src="js/lib/abcjs_midi_5.12.0-min.js"></script>
     <script type="text/javascript" src="js/define.js"></script>
     <script type="text/javascript" src="js/utils.js"></script>
     <script type="text/javascript" src="js/system.js"></script>
@@ -279,6 +282,7 @@
     <script type="text/javascript" src="js/score_input.js"></script>
     <script type="text/javascript" src="js/score_sidebar.js"></script>
     <script type="text/javascript" src="js/score_footer.js"></script>
+    <script type="text/javascript" src="js/score_loader.js"></script>
     <script type="text/javascript" src="js/score_floatwnd.js"></script>
     <script type="text/javascript" src="js/score_tree.js"></script>
     <script type="text/javascript" src="js/score-source.js"></script>

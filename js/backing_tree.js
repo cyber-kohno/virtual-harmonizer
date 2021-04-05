@@ -16,10 +16,31 @@ class BackingTree {
             </div>
         `;
 
-        BackingTree.addSustainNode(4);
-        BackingTree.addSustainNode(3);
-        BackingTree.addSustainNode(2);
-        BackingTree.addSustainNode(1);
+        const sus4Node = BackingTree.addSustainNode(4);
+        getBackingList(4).forEach(element => {
+            BackingTree.addLoadNode(element, sus4Node);
+        });
+        const sus3Node = BackingTree.addSustainNode(3);
+        getBackingList(3).forEach(element => {
+            BackingTree.addLoadNode(element, sus3Node);
+        });
+        const sus2Node = BackingTree.addSustainNode(2);
+        getBackingList(2).forEach(element => {
+            BackingTree.addLoadNode(element, sus2Node);
+        });
+        const sus1Node = BackingTree.addSustainNode(1);
+        getBackingList(1).forEach(element => {
+            BackingTree.addLoadNode(element, sus1Node);
+        });
+        // BackingTree.addSustainNode(3);
+        // getBacking(3).forEach(element => {
+        //     BackingTree.addLoadNode(element);
+        // });
+        // BackingTree.addSustainNode(2);
+        // getBacking(2).forEach(element => {
+        //     BackingTree.addLoadNode(element);
+        // });
+        // BackingTree.addSustainNode(1);
     }
 
     static getTreeEl() {
@@ -57,6 +78,28 @@ class BackingTree {
         rootEl.insertAdjacentHTML('beforeend', html);
     
         const newNodeEl = rootEl.children[rootEl.children.length-1].children[0];
+        const indentSize = Number(activeNode.style.marginLeft.replace('px', ''))
+        newNodeEl.style.marginLeft = (indentSize + 20) + 'px';
+
+        return newNodeEl;
+    }
+
+    
+    static addLoadNode(params, activeNode) {
+        const parentParams = JSON.parse(activeNode.children[1].innerHTML);
+        const rootEl = BackingTree.getTreeEl();
+
+        const html = `
+            <div>
+                <div class="node" onclick="BackingTree.selectNode(this)">
+                    <span>${params.name}[</span><span>${params.channel}</span><span>]</span>
+                </div>
+                <div class="param">${JSON.stringify(params)}</div>
+            </div>
+        `;
+        activeNode.parentNode.insertAdjacentHTML('afterend', html);
+    
+        const newNodeEl = activeNode.parentNode.nextElementSibling.children[0];
         const indentSize = Number(activeNode.style.marginLeft.replace('px', ''))
         newNodeEl.style.marginLeft = (indentSize + 20) + 'px';
     }
