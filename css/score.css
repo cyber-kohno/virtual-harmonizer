@@ -385,6 +385,10 @@
     border: solid 1px rgba(0, 0, 0, 0.089);
 }
 
+#score-detail>div>.param-area:hover {
+    background-color: rgba(255, 255, 255, 0.144);
+}
+
 #score-detail>div>.param-area>.name {
     display: block;
     margin: 2px 0 4px 4px;
@@ -457,4 +461,17 @@
 
 #scoretab_cont-source>.operation>.small-button:hover {
     background-color: rgba(113, 107, 136, 0.315);
+}
+
+/* サイドバー、パラメータ変更ダイアログ */
+#sidebar-param-selector {
+    display: block;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.829);
+    border: solid 2px rgb(38, 0, 255);
+    left: 0;
+    top: 0;
+    z-index: 99;
+    text-align: left;
+    outline: none;
 }

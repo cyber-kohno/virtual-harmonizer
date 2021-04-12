@@ -47,10 +47,30 @@ class ScoreSideBar {
             disable = ' disable';
         }
         return `
-            <div class="param-area${disable}">
+            <div class="param-area${disable}" onclick="ScoreSideBar.callParamSelector(this)">
                 <div class="name"><span>${name}</span></div>
                 <div class="value"><span>${value}</span></div>
             </div>
         `;
+    }
+    
+
+    static callParamSelector(obj) {
+        return;
+        const wndEl = document.getElementById('sidebar-param-selector');
+        wndEl.classList.remove('hidden');
+        wndEl.focus();
+
+        const rect = obj.getBoundingClientRect();
+
+        wndEl.style.left = rect.left + 'px';
+        wndEl.style.top = rect.bottom + 'px';
+        wndEl.style.width = rect.width + 'px';
+        wndEl.style.height = '300px';
+
+        let html = '';
+
+        wndEl.innerHTML = html;
+
     }
 }

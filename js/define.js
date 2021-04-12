@@ -28,7 +28,6 @@ const DIATONIC_MAJOR_SCALE_JSONS = [
     { degreeIndex: 11, symbolNo: 10 },
 ];
 
-
 const DIATONIC_MAJOR_SCALE_DEGREE_NAMES = [
     'Ⅰ', 'Ⅰmaj7',
     'Ⅱm', 'Ⅱm7',
@@ -37,4 +36,14 @@ const DIATONIC_MAJOR_SCALE_DEGREE_NAMES = [
     'Ⅴ', 'Ⅴ7',
     'Ⅵm', 'Ⅵm7',
     'Ⅶm(-5)', 'Ⅶm7(-5)'
+]
+
+const DIATONIC_NATURAL_MINOR_SCALE_DEGREE_NAMES = [
+    'Ⅰm', 'Ⅰm7',
+    'Ⅱm(-5)', 'Ⅱm7(-5)',
+    '♭Ⅲ', '♭ⅢM7',
+    'Ⅳm', 'Ⅳm7',
+    'Ⅴm', 'Ⅴm7',
+    '♭Ⅵ', '♭ⅥM7',
+    '♭Ⅶ', '♭Ⅶ7'
 ]

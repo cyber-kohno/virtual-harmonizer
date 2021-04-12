@@ -28,7 +28,7 @@ class ScoreInput {
                         }
                     }
                 }
-                const adjustInitValue = function (val) {
+                const adjustInitValue = (val) => {
                     let selectedIndex = -1;
                     for (let i = 0; i < list.length; i++) {
                         if (list[i].classList.contains('active')) selectedIndex = i;
@@ -193,7 +193,7 @@ class ScoreInput {
                                     lastPosSec = posSec + time;
                                 }
                             }
-                            
+
                             const baseTime = new Date().getTime();
                             for (let i = 0; i < backingTaskList.length; i++) {
                                 const adjust = getAdjustTime(baseTime);
@@ -205,7 +205,6 @@ class ScoreInput {
                                         synth.triggerAttack(soundName, '+0', task.velocity);
                                     }
                                 }, task.curTime - adjust));
-                                ;
 
                                 ScoreTab.timerQueue.push(setTimeout(() => {
                                 }, task.curTime + task.noteTime - adjust));

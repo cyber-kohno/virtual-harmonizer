@@ -260,6 +260,7 @@ class ScoreTab {
             sustain = 1;
         }
         params.sustain4 = sustain;
+        params.backingScript = null;
         paramsEl.innerHTML = JSON.stringify(params);
     }
 
@@ -296,6 +297,7 @@ class ScoreTab {
         if (params.degreeIndex != -1) {
             chordNameHtml = `<span>${ScoreTab.getChordName(params)}</span>`;
         }
+        const isChangeChord = chordEl.innerHTML != chordNameHtml;
         chordEl.innerHTML = chordNameHtml;
 
         // 持続の更新
@@ -303,6 +305,7 @@ class ScoreTab {
         for (let i = 0; i < params.sustain4; i++) {
             sustainHtml += '<span></span>';
         }
+        const isChangeSustain = sustainEl.innerHTML != sustainHtml;
         sustainEl.innerHTML = sustainHtml;
 
         // 現在位置の更新
@@ -315,8 +318,14 @@ class ScoreTab {
         posSecEl.innerHTML = `<span>${dispPosSec.toFixed(2)}s</span>`
 
         //コードストラクトの更新
-        ScoreTab.setDefaultBackingAsigns(params);
-        ScoreTab.setDefaultBackingScript(params);
+        if (params.backingScript == null) {
+            ScoreTab.setDefaultBackingScript(params);
+            const places = '1-0,1-1,1-2,2-0,2-1,2-2,3-0,3-1,3-2,4-0,4-1,4-2';
+            params.asignPlaces = places;
+        }
+        if (isChangeChord) {
+            ScoreTab.updateBackingAsigns(params);
+        }
         paramsEl.innerHTML = JSON.stringify(params);
     }
 
@@ -460,40 +469,6 @@ class ScoreTab {
         }
     }
 
-    static toggleAsignSound(obj) {
-        obj.classList.toggle('active');
-        ScoreTab.updateAsignSound();
-    }
-
-    static updateAsignSound() {
-        const wndEl = document.getElementById('score-backing-selector');
-
-        const outputEl = wndEl.children[1].children[1].children[2];
-        const lineList = wndEl.children[1].children[1].children[1].children;
-        const values = [];
-        const indexes = [];
-        const sounds = [];
-        for (let i = 0; i < lineList.length; i++) {
-            const soundList = lineList[i].children[1].children;
-            for (let j = 0; j < soundList.length; j++) {
-                const soundEl = soundList[j];
-                if (soundEl.classList.contains('active')) {
-                    const params = JSON.parse(soundEl.children[1].innerHTML);
-                    values.push(params.place);
-                    indexes.push(params.index);
-                    sounds.push(params.soundName);
-                }
-            }
-        }
-
-        outputEl.innerHTML = `
-            <span>${values.join(',')}</span>
-            <div class="param">${sounds.join(',')}</div>
-            <div class="param">${indexes.join(',')}</div>
-        `;
-        ScoreTab.updateStructViewer(indexes);
-    }
-
     static updateStructViewer(keys) {
         ScoreTab.structViewer.drawKeyboad(keys);
     }
@@ -519,12 +494,12 @@ class ScoreTab {
         return params;
     }
 
-    static setDefaultBackingAsigns(params) {
+    static updateBackingAsigns(params) {
         const rootKeyIndex = params.baseInfo.rootKeyIndex;
         const degreeIndex = params.degreeIndex;
         const intervals = params.symbol.intervals.split(',');
 
-        const places = '1-0,1-2,2-0,2-1,2-2,3-0';
+        const places = params.asignPlaces;
         const indexes = [];
         const sounds = [];
         // 6オクターブ分処理する
@@ -542,10 +517,7 @@ class ScoreTab {
             }
         }
         params.asignIndexes = indexes.join(',');
-        params.asignPlaces = places;
         params.asignSounds = sounds.join(',');
-
-        return params;
     }
 
     static setDefaultBackingScript(params) {
@@ -559,11 +531,9 @@ class ScoreTab {
                 script = getBacking(2, 'pops01');
                 break;
             case 3:
-                script = getBacking(3, 'ballad01');
+                script = getBacking(3, 'ballad02');
                 break;
         }
         params.backingScript = script;
-
-        return params;
     }
 }

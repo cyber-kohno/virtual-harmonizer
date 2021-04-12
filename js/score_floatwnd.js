@@ -35,9 +35,9 @@ class ScoreFloatWnd {
         ScoreTab.updateSymbolViewer(rootIndex, params.symbol.intervals);
     }
 
-
     static callBackingSelectorWnd(obj) {
         const params = ScoreTab.getParams(obj);
+        const backing = params.backingScript;
         const asignPlaces = params.asignPlaces;
         const wndEl = document.getElementById('score-backing-selector');
         wndEl.classList.remove('hidden');
@@ -65,17 +65,21 @@ class ScoreFloatWnd {
         // 基本情報
         infoEl.innerHTML = `
             <div><span>chord:</span><span>${ScoreTab.getChordName(params)}</span></div>
-            <div><span>length:</span><span>${params.sustain4}</span></div>
+            <div><span>sustain:</span><span>${params.sustain4}</span></div>
             <div><span>struct:</span><span>${structs.length} [${structs.join(' ,')}]</span></div>
         `;
 
         // バッキングパターン
         patternEl.innerHTML = '';
         const patternList = ScoreFloatWnd.getPatternList(params.sustain4);
-        for(let i = 0; i < patternList.length; i ++) {
+        for (let i = 0; i < patternList.length; i++) {
             const pattern = patternList[i];
+            let activeClass = '';
+            if (backing.name == pattern.name) {
+                activeClass = 'class="active"';
+            }
             patternEl.innerHTML += `
-                <div><span>${pattern.name}</span><span>[${pattern.channel}]</span></div>
+                <div ${activeClass}><span>${pattern.name}</span><span>[${pattern.channel}]</span></div>
             `;
         }
 
@@ -100,7 +104,7 @@ class ScoreFloatWnd {
                 if (asignPlaces != null) {
                     asigned = asignPlaces.split(',').includes(`${i}-${j}`) ? 'class="active"' : '';
                 }
-                structHtml += `<div onclick="ScoreTab.toggleAsignSound(this)" ${asigned}>
+                structHtml += `<div onclick="ScoreFloatWnd.toggleAsignSound(this)" ${asigned}>
                 <span>${value}</span><div class="param">${JSON.stringify(asignParams)}</div>
             </div>`;
             }
@@ -111,9 +115,43 @@ class ScoreFloatWnd {
 
         structEl.innerHTML = structHtml;
 
-        ScoreTab.updateAsignSound();
+        ScoreFloatWnd.updateAsignSound();
     }
-    
+
+    static toggleAsignSound(obj) {
+        obj.classList.toggle('active');
+        ScoreFloatWnd.updateAsignSound();
+    }
+
+    static updateAsignSound() {
+        const wndEl = document.getElementById('score-backing-selector');
+
+        const outputEl = wndEl.children[1].children[1].children[2];
+        const lineList = wndEl.children[1].children[1].children[1].children;
+        const values = [];
+        const indexes = [];
+        const sounds = [];
+        for (let i = 0; i < lineList.length; i++) {
+            const soundList = lineList[i].children[1].children;
+            for (let j = 0; j < soundList.length; j++) {
+                const soundEl = soundList[j];
+                if (soundEl.classList.contains('active')) {
+                    const params = JSON.parse(soundEl.children[1].innerHTML);
+                    values.push(params.place);
+                    indexes.push(params.index);
+                    sounds.push(params.soundName);
+                }
+            }
+        }
+
+        outputEl.innerHTML = `
+            <span>${values.join(',')}</span>
+            <div class="param">${sounds.join(',')}</div>
+            <div class="param">${indexes.join(',')}</div>
+        `;
+        ScoreTab.updateStructViewer(indexes);
+    }
+
     static symbolWndOperation(e) {
         const noteEl = document.getElementById('score-list-root');
         const wndEl = document.getElementById('chord-symbol-list');
@@ -138,6 +176,7 @@ class ScoreFloatWnd {
                 ScoreTab.updateSymbolViewer(rootIndex, intervals);
             }
         }
+
         switch (e.key) {
             case 'ArrowUp':
                 selectSymbol(false);
@@ -167,10 +206,47 @@ class ScoreFloatWnd {
         const obj = ScoreTab.getSelectedItem();
         const chordParams = ScoreTab.getParams(obj);
         const outputEl = wndEl.children[1].children[1].children[2];
+
+
+        const selectPattern = (dir) => {
+            const editorEl = wndEl.getElementsByClassName('editor')[0];
+            const patternEl = editorEl.getElementsByClassName('pattern')[0];
+            const list = patternEl.children;
+            let cur = -1;
+            for (let i = 0; i < list.length; i++) {
+                const pat = list[i];
+                if (pat.classList.contains('active')) {
+                    cur = i;
+                    break;
+                }
+            }
+            if ((dir < 0 && cur > 0) ||
+                (dir > 0 && cur < list.length - 1)) {
+                list[cur].classList.remove('active');
+                list[cur + dir].classList.add('active');
+            }
+        }
+
+        const getCurrentPattern = () => {
+            const editorEl = wndEl.getElementsByClassName('editor')[0];
+            const patternEl = editorEl.getElementsByClassName('pattern')[0];
+            const list = patternEl.children;
+            for (let i = 0; i < list.length; i++) {
+                const pat = list[i];
+                if (pat.classList.contains('active')) {
+                    const patternList = ScoreFloatWnd.getPatternList(chordParams.sustain4);
+                    return patternList[i];
+                }
+            }
+            return null;
+        }
+
         switch (e.key) {
             case 'ArrowUp':
+                selectPattern(-1);
                 break;
             case 'ArrowDown':
+                selectPattern(1);
                 break;
             case 'b':
                 wndEl.classList.add('hidden');
@@ -179,6 +255,7 @@ class ScoreFloatWnd {
             case 'Enter':
                 wndEl.classList.add('hidden');
                 noteEl.focus();
+                chordParams.backingScript = getCurrentPattern();
                 chordParams.asignPlaces = outputEl.children[0].innerHTML;
                 chordParams.asignSounds = outputEl.children[1].innerHTML;
                 chordParams.asignIndexes = outputEl.children[2].innerHTML;
@@ -192,9 +269,9 @@ class ScoreFloatWnd {
         const list = [];
         const backingList = BACKING_SAMPLE_LIST;
 
-        for(let i = 0; i < backingList.length; i ++) {
+        for (let i = 0; i < backingList.length; i++) {
             const backing = backingList[i];
-            if(backing.sustain4 == sustain4) {
+            if (backing.sustain4 == sustain4) {
                 list.push(backing);
             }
         }

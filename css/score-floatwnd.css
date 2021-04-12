@@ -88,7 +88,7 @@
 #score-backing-selector>.info>div>span:nth-child(2) {
     margin-left: 15px;
     width: 330px;
-    color: rgb(255, 81, 0);
+    color: rgba(255, 48, 29, 0.925);
 }
 
 #score-backing-selector>.editor {
@@ -107,6 +107,9 @@
     height: 20px;
     margin: 1px 1px;
     background-color: rgba(245, 245, 245, 0.096);
+}
+#score-backing-selector>.editor>.pattern>div.active {
+    background-color: rgba(255, 255, 255, 0.322);
 }
 
 #score-backing-selector>.editor>.pattern>div>span {
@@ -165,7 +168,7 @@
 }
 
 #score-backing-selector>.editor>.struct>.body {
-    background-color: rgba(255, 255, 0, 0.514);
+    background-color: rgba(0, 0, 0, 0.514);
     height: 122px;
     margin-top: 2px;
     overflow: hidden;
@@ -215,7 +218,7 @@
 }
 
 #score-backing-selector>.editor>.struct>.body>.line>.sounds>div.active {
-    background-color: rgba(255, 36, 138, 0.308);
+    background-color: rgba(128, 204, 255, 0.479);
 }
 
 #score-backing-selector>.editor>.struct>.body>.line>.sounds>div>span {
