@@ -100,6 +100,7 @@
 #score-backing-selector>.editor>.pattern {
     background-color: rgba(0, 0, 255, 0.103);
     height: 130px;
+    overflow-y: auto;
 }
 
 #score-backing-selector>.editor>.pattern>div {

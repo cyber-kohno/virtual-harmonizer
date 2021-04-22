@@ -173,12 +173,12 @@ class ScoreInput {
                                     // let adjust = getAdjustTime(baseTime);
                                     // backingEnv.baseTime = baseTime;
                                     backingEnv.posSec = curParams.posSec - startSec;// - adjust;
+                                    backingEnv.obj = i;
 
                                     // 1小節の時間（ミリ秒）
                                     let time = beatTime * curParams.sustain4;
                                     const posSec = curParams.posSec - startSec;
                                     // const id = setTimeout(() => {
-                                    //     ScoreTab.selectScoreItem(objEl);
                                     // }, posSec);
 
                                     if (script == null) {
@@ -187,7 +187,14 @@ class ScoreInput {
                                         // ScoreFooterTab.pianoViewer.updateKeyboad();
                                     } else {
                                         // playBackingScript(backingEnv, script, ScoreTab.timerQueue);
-                                        getBackingTask(backingEnv, script, backingTaskList);
+
+                                        const json = {};
+                                        json.index = i;
+                                        json.curTime = posSec;
+                                        backingTaskList.push(json);
+                                        if (curParams.degreeIndex != -1) {
+                                            getBackingTask(backingEnv, script, backingTaskList);
+                                        }
                                     }
                                     // ScoreTab.timerQueue.push(id);
                                     lastPosSec = posSec + time;
@@ -195,9 +202,13 @@ class ScoreInput {
                             }
 
                             const baseTime = new Date().getTime();
+                            // シンセ音声
                             for (let i = 0; i < backingTaskList.length; i++) {
                                 const adjust = getAdjustTime(baseTime);
                                 const task = backingTaskList[i];
+                                if(task.index != null) {
+                                    continue;
+                                }
 
                                 ScoreTab.timerQueue.push(setTimeout(() => {
                                     for (let k = 0; k < task.sounds.length; k++) {
@@ -216,9 +227,16 @@ class ScoreInput {
                                     }
                                 }, task.curTime + task.endTime - adjust + 10));
                             }
+                            // 鍵盤描画
                             for (let i = 0; i < backingTaskList.length; i++) {
                                 const adjust = getAdjustTime(baseTime) - 1;
                                 const task = backingTaskList[i];
+                                if(task.index != null) {
+                                    ScoreTab.timerQueue.push(setTimeout(() => {
+                                        ScoreTab.selectScoreItem(list[task.index]);
+                                    }, task.curTime - adjust));
+                                    continue;
+                                }
 
                                 ScoreTab.timerQueue.push(setTimeout(() => {
                                     ScoreFooterTab.pianoViewer.downKeys(task.indexes, task.side);

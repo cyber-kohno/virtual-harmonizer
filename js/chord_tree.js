@@ -9,7 +9,9 @@ const SYMBOL_PARAMS_LIST = [
     {"no":8,"parentNo":0,"depth":1,"name":"m7","struct":"p1,m3,p5,m7","fixed":"p1","intervals":"0,3,7,10"},
     {"no":9,"parentNo":0,"depth":1,"name":"mmaj7","struct":"p1,m3,p5,M7","fixed":"p1","intervals":"0,3,7,11"},
     {"no":10,"parentNo":0,"depth":1,"name":"add9","struct":"p1,M2,M3,p5","fixed":"p1","intervals":"0,2,4,7"},
-    {"no":11,"parentNo":0,"depth":1,"name":"m(-5)","struct":"p1,m3,d5","fixed":"p1","intervals":"0,3,6"},
+    {"no":11,"parentNo":0,"depth":1,"name":"madd9","struct":"p1,M2,m3,p5","fixed":"p1","intervals":"0,2,3,7"},
+    {"no":12,"parentNo":0,"depth":1,"name":"6(9)","struct":"p1,M2,M3,p5,M6","fixed":"p1","intervals":"0,2,4,7,9"},
+    {"no":13,"parentNo":0,"depth":1,"name":"m(-5)","struct":"p1,m3,d5","fixed":"p1","intervals":"0,3,6"},
 ];
 
 function getChordSymbolList() {

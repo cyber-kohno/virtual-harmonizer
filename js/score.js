@@ -375,7 +375,7 @@ class ScoreTab {
         const html = `
             <div class="init" onclick="ScoreTab.selectScoreItem(this)">
                 <div>
-                    <div><span>temp: </span><span></span></div>
+                    <div><span>tempo: </span><span></span></div>
                     <div><span>rythm: </span><span></span></div>
                     <div><span>key: </span><span></span></div>
                     <div><span>scale: </span><span></span></div>
